@@ -1,4 +1,4 @@
-package com.handsome.club.hnh.cookbook.data.food
+package com.handsome.club.hnh.cookbook.data.database
 
 import androidx.room.*
 
@@ -19,7 +19,7 @@ data class FoodEntity(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "food_id", index = true)
-    var foodId: Int = 0
+    var foodId: Long = 0
 
     @Ignore
     lateinit var ingredients: List<IngredientEntity>
@@ -37,9 +37,20 @@ data class IngredientEntity(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "ingredient_id", index = true)
-    var ingredientId: Int = 0
+    var ingredientId: Long = 0
 
 }
+
+@Entity(primaryKeys = ["food_id", "ingredient_id"])
+data class FoodIngredientCrossRef(
+
+    @ColumnInfo(name = "food_id", index = true)
+    val foodId: Long,
+
+    @ColumnInfo(name = "ingredient_id", index = true)
+    val ingredientId: Long,
+
+    )
 
 @Entity(tableName = "feps")
 data class FepEntity(
@@ -49,20 +60,9 @@ data class FepEntity(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "fep_id", index = true)
-    var fepId: Int = 0
+    var fepId: Long = 0
 
 }
-
-@Entity(primaryKeys = ["food_id", "ingredient_id"])
-data class FoodIngredientCrossRef(
-
-    @ColumnInfo(name = "food_id", index = true)
-    val foodId: Int,
-
-    @ColumnInfo(name = "ingredient_id", index = true)
-    val ingredientId: Int,
-
-    )
 
 @Entity(primaryKeys = ["food_id", "fep_id"])
 data class FoodFepCrossRef(
