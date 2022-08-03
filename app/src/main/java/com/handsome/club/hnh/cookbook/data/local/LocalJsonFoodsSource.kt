@@ -1,4 +1,4 @@
-package com.handsome.club.hnh.cookbook.data.food
+package com.handsome.club.hnh.cookbook.data.local
 
 import android.content.res.Resources
 import com.handsome.club.hnh.cookbook.R

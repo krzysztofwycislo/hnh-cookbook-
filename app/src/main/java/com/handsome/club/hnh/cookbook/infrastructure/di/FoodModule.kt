@@ -1,7 +1,7 @@
 package com.handsome.club.hnh.cookbook.infrastructure.di
 
-import com.handsome.club.hnh.cookbook.data.base.MainDatabase
-import com.handsome.club.hnh.cookbook.data.food.LocalJsonFoodsSource
+import com.handsome.club.hnh.cookbook.data.database.MainDatabase
+import com.handsome.club.hnh.cookbook.data.local.LocalJsonFoodsSource
 import com.handsome.club.hnh.cookbook.model.food.FoodsSource
 import dagger.Module
 import dagger.Provides

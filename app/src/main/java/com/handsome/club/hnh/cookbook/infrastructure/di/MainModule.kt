@@ -3,7 +3,7 @@ package com.handsome.club.hnh.cookbook.infrastructure.di
 import android.content.Context
 import android.content.res.Resources
 import androidx.room.Room
-import com.handsome.club.hnh.cookbook.data.base.MainDatabase
+import com.handsome.club.hnh.cookbook.data.database.MainDatabase
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

@@ -39,18 +39,10 @@ data class IngredientEntity(
     @ColumnInfo(name = "ingredient_id", index = true)
     var ingredientId: Long = 0
 
-}
-
-@Entity(primaryKeys = ["food_id", "ingredient_id"])
-data class FoodIngredientCrossRef(
-
     @ColumnInfo(name = "food_id", index = true)
-    val foodId: Long,
+    var foodId: Long = 0
 
-    @ColumnInfo(name = "ingredient_id", index = true)
-    val ingredientId: Long,
-
-    )
+}
 
 @Entity(tableName = "feps")
 data class FepEntity(
@@ -62,33 +54,23 @@ data class FepEntity(
     @ColumnInfo(name = "fep_id", index = true)
     var fepId: Long = 0
 
-}
-
-@Entity(primaryKeys = ["food_id", "fep_id"])
-data class FoodFepCrossRef(
-
     @ColumnInfo(name = "food_id", index = true)
-    val foodId: Long,
+    var foodId: Long = 0
 
-    @ColumnInfo(name = "fep_id", index = true)
-    val fepId: Long
-
-)
+}
 
 data class FoodWithIngredientsAndFeps(
     @Embedded val food: FoodEntity,
 
     @Relation(
         parentColumn = "food_id",
-        entityColumn = "ingredient_id",
-        associateBy = Junction(FoodIngredientCrossRef::class)
+        entityColumn = "food_id",
     )
     val ingredients: List<IngredientEntity>,
 
     @Relation(
         parentColumn = "food_id",
-        entityColumn = "fep_id",
-        associateBy = Junction(FoodFepCrossRef::class)
+        entityColumn = "food_id",
     )
     val feps: List<FepEntity>
 ) {

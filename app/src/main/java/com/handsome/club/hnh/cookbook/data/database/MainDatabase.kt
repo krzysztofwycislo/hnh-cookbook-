@@ -1,20 +1,15 @@
-package com.handsome.club.hnh.cookbook.data.base
+package com.handsome.club.hnh.cookbook.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.handsome.club.hnh.cookbook.data.database.*
 
 @Database(
     entities = [
         FoodEntity::class,
-
         IngredientEntity::class,
-        FoodIngredientCrossRef::class,
-
         FepEntity::class,
-        FoodFepCrossRef::class,
     ],
-    version = 9
+    version = 11
 )
 abstract class MainDatabase : RoomDatabase() {
 

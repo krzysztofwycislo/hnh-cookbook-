@@ -36,7 +36,7 @@ fun FoodsList(foods: List<Food>) {
     ) {
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(foods) {
-                FoodItemView(it)
+                FoodListItem(it)
             }
         }
     }

@@ -1,26 +1,27 @@
 package com.handsome.club.hnh.cookbook.data.database
 
 import androidx.room.*
+import com.handsome.club.hnh.cookbook.utils.forEachApply
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 @Dao
 interface FoodDao {
 
+    // Food
+
     @Transaction
     suspend fun insertFood(food: FoodEntity) {
         val foodId = insertFoodInternal(food)
 
-        bulkIngredientInsert(food.ingredients)
-            .map { FoodIngredientCrossRef(foodId, it) }
-            .apply(::bulkFoodIngredientCrossRefInsert)
+        food.ingredients
+            .forEachApply { it.foodId = foodId }
+            .let { bulkIngredientInsert(it) }
 
-        bulkFepInsert(food.feps)
-            .map { FoodFepCrossRef(foodId, it) }
-            .apply(::bulkFoodFepRefInsert)
+        food.feps
+            .forEachApply { it.foodId = foodId }
+            .let { bulkFepInsert(it) }
     }
-
-    // Food
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFoodInternal(food: FoodEntity): Long
@@ -36,17 +37,9 @@ interface FoodDao {
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun bulkFoodIngredientCrossRefInsert(foodIngredientRefs: List<FoodIngredientCrossRef>)
-
-    @Transaction
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun bulkIngredientInsert(ingredients: List<IngredientEntity>): List<Long>
 
     // Fep
-
-    @Transaction
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun bulkFoodFepRefInsert(foodFepRefs: List<FoodFepCrossRef>)
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
