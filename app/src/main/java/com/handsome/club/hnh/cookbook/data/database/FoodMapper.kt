@@ -19,6 +19,7 @@ class FoodMapper @Inject constructor() {
     fun toModels(entities: List<FoodEntity>) = entities.map {
         with(it) {
             Food(
+                foodId,
                 itemName,
                 resourceName,
                 hunger,
@@ -34,14 +35,14 @@ class FoodMapper @Inject constructor() {
     private fun Ingredient.toEntity() = IngredientEntity(name, percentage)
 
     private fun List<IngredientEntity>.toIngredientModels() = map { it.toModel() }
-    private fun IngredientEntity.toModel() = Ingredient(name, percentage)
+    private fun IngredientEntity.toModel() = Ingredient(ingredientId, name, percentage)
 
 
     private fun List<Fep>.toFepEntities() = map { it.toEntity() }
     private fun Fep.toEntity() = FepEntity(name, value)
 
     private fun List<FepEntity>.toFepModels() = map { it.toFepModel() }
-    private fun FepEntity.toFepModel() = Fep(name, value)
+    private fun FepEntity.toFepModel() = Fep(fepId, name, value)
 
 }
 

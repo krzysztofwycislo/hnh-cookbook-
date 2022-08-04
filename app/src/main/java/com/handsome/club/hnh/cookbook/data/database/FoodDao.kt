@@ -2,6 +2,7 @@ package com.handsome.club.hnh.cookbook.data.database
 
 import androidx.room.*
 import com.handsome.club.hnh.cookbook.utils.forEachApply
+import com.handsome.club.hnh.cookbook.utils.forEachIndexedApply
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -11,20 +12,24 @@ interface FoodDao {
     // Food
 
     @Transaction
-    suspend fun insertFood(food: FoodEntity) {
-        val foodId = insertFoodInternal(food)
+    suspend fun insertFoodsWithIngredientsAndFeps(foods: List<FoodEntity>) {
+        val foodIds = bulkFoodInsert(foods)
 
-        food.ingredients
-            .forEachApply { it.foodId = foodId }
-            .let { bulkIngredientInsert(it) }
+        foods.forEachIndexedApply { index, food ->
+            val foodId = foodIds[index]
+            food.ingredients
+                .forEachApply { it.foodId = foodId }
+                .let { bulkIngredientInsert(it) }
 
-        food.feps
-            .forEachApply { it.foodId = foodId }
-            .let { bulkFepInsert(it) }
+            food.feps
+                .forEachApply { it.foodId = foodId }
+                .let { bulkFepInsert(it) }
+        }
     }
 
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFoodInternal(food: FoodEntity): Long
+    suspend fun bulkFoodInsert(foods: List<FoodEntity>): List<Long>
 
     suspend fun getAllFoods(): Flow<List<FoodEntity>> = getAllFoodsWithIngredientsAndFeps().map { list -> list.map { it.food } }
 

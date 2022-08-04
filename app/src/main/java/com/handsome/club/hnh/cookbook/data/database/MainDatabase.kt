@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase
         IngredientEntity::class,
         FepEntity::class,
     ],
-    version = 11
+    version = 15
 )
 abstract class MainDatabase : RoomDatabase() {
 

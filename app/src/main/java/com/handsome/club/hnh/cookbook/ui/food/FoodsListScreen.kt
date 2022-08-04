@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.handsome.club.hnh.cookbook.model.food.Food
 import com.handsome.club.hnh.cookbook.ui.base.ErrorScreen
 import com.handsome.club.hnh.cookbook.ui.base.LoadingScreen
-import com.handsome.club.hnh.cookbook.ui.createExampleFood
+import com.handsome.club.hnh.cookbook.ui.exampleFoods
 
 
 @Composable
@@ -23,20 +23,21 @@ fun FoodsListScreen(viewModel: FoodListViewModel) {
         when {
             state.initialLoading -> LoadingScreen()
             state.error != null -> ErrorScreen(state.error)
-            state.foods != null -> FoodsList(state.foods)
+            state.foods != null -> FoodsList(state.foods, viewModel::onFoodSelection, state.selectedFoodId)
         }
     }
 }
 
 @Composable
-fun FoodsList(foods: List<Food>) {
+fun FoodsList(foods: List<Food>, onClick: (Food) -> Unit, selectedFoodId: Long?) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(foods) {
-                FoodListItem(it)
+                val isSelected = it.id == selectedFoodId
+                FoodListItem(it, onClick, isSelected)
             }
         }
     }
@@ -46,12 +47,5 @@ fun FoodsList(foods: List<Food>) {
 @Preview(showBackground = true)
 @Composable
 fun FoodsListScreenPrev() {
-    FoodsList(
-        listOf(
-            createExampleFood(1),
-            createExampleFood(2),
-            createExampleFood(3),
-            createExampleFood(4),
-        )
-    )
+    FoodsList(exampleFoods, {}, 1)
 }

@@ -4,8 +4,6 @@ import androidx.compose.ui.graphics.Color
 import com.handsome.club.hnh.cookbook.model.food.Fep
 import com.handsome.club.hnh.cookbook.model.food.Food
 import com.handsome.club.hnh.cookbook.model.food.Ingredient
-import java.util.stream.Collectors
-import java.util.stream.IntStream
 import kotlin.random.Random
 
 
@@ -50,15 +48,23 @@ val exampleFoods = listOf(
 )
 
 fun createExampleFood(seed: Int): Food {
-    val ingredients = IntStream.rangeClosed(1, seed)
-        .mapToObj { Ingredient("ingredient$seed-$it", 100) }
-        .collect(Collectors.toList())
+    val initialId = seed * 100L
 
-    val feps = IntStream.rangeClosed(1, seed)
-        .mapToObj { Fep(randomRealFepName(), it.toFloat()) }
-        .collect(Collectors.toList())
+    val ingredients = listOf(
+        Ingredient(initialId, "Turnip", 10),
+        Ingredient(initialId + 1, "Poppy", 100),
+        Ingredient(initialId + 2, "Piece of slave", 70),
+        Ingredient(initialId + 3, "Bear Meat", 1)
+    )
 
-    return Food("food$seed", "resource$seed", seed.toFloat(), seed * 200, ingredients, feps)
+    val feps = listOf(
+        Fep(initialId, randomRealFepName(), 3.1F),
+        Fep(initialId + 1, randomRealFepName(), 22F),
+        Fep(initialId + 2, randomRealFepName(), 120.5F),
+        Fep(initialId + 3, randomRealFepName(), 0F)
+    )
+
+    return Food(seed.toLong(), "Food Example $seed", "resource$seed", seed.toFloat(), seed * 200, ingredients, feps)
 }
 
 private fun randomRealFepName(): String {

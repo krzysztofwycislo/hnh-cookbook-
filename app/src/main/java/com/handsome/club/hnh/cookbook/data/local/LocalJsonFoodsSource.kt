@@ -2,7 +2,7 @@ package com.handsome.club.hnh.cookbook.data.local
 
 import android.content.res.Resources
 import com.handsome.club.hnh.cookbook.R
-import com.handsome.club.hnh.cookbook.model.food.Food
+import com.handsome.club.hnh.cookbook.data.database.FoodEntity
 import com.handsome.club.hnh.cookbook.model.food.FoodsSource
 import com.handsome.club.hnh.cookbook.utils.loadJsonFromRawResource
 import com.squareup.moshi.JsonAdapter
@@ -15,10 +15,10 @@ class LocalJsonFoodsSource @Inject constructor(
     private val resources: Resources
 ) : FoodsSource {
 
-    private val type = Types.newParameterizedType(MutableList::class.java, Food::class.java)
-    private val foodAdapter: JsonAdapter<List<Food>> = moshi.adapter(type)
+    private val type = Types.newParameterizedType(MutableList::class.java, FoodEntity::class.java)
+    private val foodAdapter: JsonAdapter<List<FoodEntity>> = moshi.adapter(type)
 
-    override suspend fun fetchAllFoods(): List<Food> {
+    override suspend fun fetchAllFoods(): List<FoodEntity> {
         return resources.loadJsonFromRawResource(R.raw.food_info)
             ?.let(foodAdapter::fromJson)
             ?: throw IllegalStateException("Foods parsed from local json are empty")

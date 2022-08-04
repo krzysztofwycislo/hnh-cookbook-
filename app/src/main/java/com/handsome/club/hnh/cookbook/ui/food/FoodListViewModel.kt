@@ -13,7 +13,8 @@ import javax.inject.Inject
 data class FoodListScreenState(
     val initialLoading: Boolean = true,
     val error: ScreenError? = null,
-    val foods: List<Food>? = null
+    val foods: List<Food>? = null,
+    val selectedFoodId: Long? = null
 ) : ScreenState
 
 @HiltViewModel
@@ -27,6 +28,12 @@ class FoodListViewModel @Inject constructor(
                 screenState = screenState.copy(initialLoading = false, error = null, foods = it)
             }
         }
+    }
+
+    fun onFoodSelection(food: Food) {
+        screenState = screenState.copy(
+            selectedFoodId = food.id.takeIf { food.id != screenState.selectedFoodId }
+        )
     }
 
 }
