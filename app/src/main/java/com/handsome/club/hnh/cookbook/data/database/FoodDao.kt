@@ -1,10 +1,9 @@
 package com.handsome.club.hnh.cookbook.data.database
 
 import androidx.room.*
+import com.handsome.club.hnh.cookbook.base.paging.Pagination
 import com.handsome.club.hnh.cookbook.utils.forEachApply
 import com.handsome.club.hnh.cookbook.utils.forEachIndexedApply
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 @Dao
 interface FoodDao {
@@ -12,7 +11,7 @@ interface FoodDao {
     // Food
 
     @Transaction
-    suspend fun insertFoodsWithIngredientsAndFeps(foods: List<FoodEntity>) {
+    suspend fun insertFoods(foods: List<FoodEntity>) {
         val foodIds = bulkFoodInsert(foods)
 
         foods.forEachIndexedApply { index, food ->
@@ -31,11 +30,13 @@ interface FoodDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun bulkFoodInsert(foods: List<FoodEntity>): List<Long>
 
-    suspend fun getAllFoods(): Flow<List<FoodEntity>> = getAllFoodsWithIngredientsAndFeps().map { list -> list.map { it.food } }
+    suspend fun getFoods(pagination: Pagination) = getRecipes(pagination).map { it.food }
+
+    suspend fun getRecipes(pagination: Pagination) = getRecipes(pagination.offset)
 
     @Transaction
-    @Query("SELECT * FROM foods")
-    fun getAllFoodsWithIngredientsAndFeps(): Flow<List<FoodWithIngredientsAndFeps>>
+    @Query("SELECT * FROM foods LIMIT :limit")
+    fun getRecipes(limit: Int): List<FoodRecipe>
 
 
     // Ingredient

@@ -59,7 +59,7 @@ data class FepEntity(
 
 }
 
-data class FoodWithIngredientsAndFeps(
+data class FoodRecipe(
     @Embedded val food: FoodEntity,
 
     @Relation(

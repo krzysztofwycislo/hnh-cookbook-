@@ -1,8 +1,11 @@
 package com.handsome.club.hnh.cookbook.ui.food
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.handsome.club.hnh.cookbook.model.food.Food
-import com.handsome.club.hnh.cookbook.model.food.GetFoodsUseCase
+import com.handsome.club.hnh.cookbook.model.food.ObserveFoodsUseCase
 import com.handsome.club.hnh.cookbook.ui.base.BaseViewModel
 import com.handsome.club.hnh.cookbook.ui.base.ScreenError
 import com.handsome.club.hnh.cookbook.ui.base.ScreenState
@@ -11,21 +14,31 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class FoodListScreenState(
-    val initialLoading: Boolean = true,
     val error: ScreenError? = null,
     val foods: List<Food>? = null,
-    val selectedFoodId: Long? = null
+    val selectedFoodId: Long? = null,
 ) : ScreenState
 
 @HiltViewModel
 class FoodListViewModel @Inject constructor(
-    private val getFoodsUseCase: GetFoodsUseCase
-) : BaseViewModel<FoodListScreenState>(FoodListScreenState()) {
+    private val observeFoodsUseCase: ObserveFoodsUseCase,
+) : BaseViewModel() {
+
+    var screenState by mutableStateOf(FoodListScreenState())
+        private set
+
 
     init {
-        viewModelScope.launch {
-            getFoodsUseCase().collect {
-                screenState = screenState.copy(initialLoading = false, error = null, foods = it)
+        observe()
+    }
+
+    private fun observe() = with(viewModelScope) {
+        launch {
+            observeFoodsUseCase().collect {
+                screenState = screenState.copy(
+                    error = null,
+                    foods = it
+                )
             }
         }
     }
@@ -34,6 +47,12 @@ class FoodListViewModel @Inject constructor(
         screenState = screenState.copy(
             selectedFoodId = food.id.takeIf { food.id != screenState.selectedFoodId }
         )
+    }
+
+    fun loadNextPage() {
+        viewModelScope.launch {
+            observeFoodsUseCase.loadNextPage()
+        }
     }
 
 }

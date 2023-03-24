@@ -3,15 +3,14 @@ package com.handsome.club.hnh.cookbook.ui.food
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.handsome.club.hnh.cookbook.base.paging.PageLazyColumn
 import com.handsome.club.hnh.cookbook.model.food.Food
 import com.handsome.club.hnh.cookbook.ui.base.ErrorScreen
-import com.handsome.club.hnh.cookbook.ui.base.LoadingScreen
 import com.handsome.club.hnh.cookbook.ui.exampleFoods
 
 
@@ -21,20 +20,37 @@ fun FoodsListScreen(viewModel: FoodListViewModel) {
 
     Column {
         when {
-            state.initialLoading -> LoadingScreen()
-            state.error != null -> ErrorScreen(state.error)
-            state.foods != null -> FoodsList(state.foods, viewModel::onFoodSelection, state.selectedFoodId)
+            state.error != null ->
+                ErrorScreen(
+                    error = state.error
+                )
+
+            state.foods != null ->
+                FoodsList(
+                    foods = state.foods,
+                    onClick = viewModel::onFoodSelection,
+                    selectedFoodId = state.selectedFoodId,
+                    loadPage = viewModel::loadNextPage
+                )
         }
     }
 }
 
 @Composable
-fun FoodsList(foods: List<Food>, onClick: (Food) -> Unit, selectedFoodId: Long?) {
+fun FoodsList(
+    foods: List<Food>,
+    onClick: (Food) -> Unit,
+    selectedFoodId: Long?,
+    loadPage: () -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        PageLazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            loadPage = loadPage
+        ) {
             items(foods) {
                 val isSelected = it.id == selectedFoodId
                 FoodListItem(it, onClick, isSelected)
@@ -47,5 +63,10 @@ fun FoodsList(foods: List<Food>, onClick: (Food) -> Unit, selectedFoodId: Long?)
 @Preview(showBackground = true)
 @Composable
 fun FoodsListScreenPrev() {
-    FoodsList(exampleFoods, {}, 1)
+    FoodsList(
+        foods = exampleFoods,
+        onClick = {},
+        selectedFoodId = 1,
+        loadPage = {}
+    )
 }

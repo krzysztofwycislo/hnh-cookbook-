@@ -18,8 +18,8 @@ class PopulateFoodRepositoryUseCase @Inject constructor(
         return withContext(Dispatchers.IO) {
             if (persistance.isEmpty()) {
                 val executionTime = getExecutionTime {
-                    source.fetchAllFoods()
-                        .run { persistance.insertFoodsWithIngredientsAndFeps(this) }
+                    val foods = source.fetchAllFoods()
+                    persistance.insertFoods(foods)
                 }
                 Timber.i("Elapsed time = $executionTime s")
             }

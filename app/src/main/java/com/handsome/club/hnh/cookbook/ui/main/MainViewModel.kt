@@ -1,5 +1,8 @@
 package com.handsome.club.hnh.cookbook.ui.main
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.handsome.club.hnh.cookbook.model.food.PopulateFoodRepositoryUseCase
 import com.handsome.club.hnh.cookbook.ui.base.BaseViewModel
@@ -17,11 +20,15 @@ data class MainScreenState(
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val populateFoodRepositoryUseCase: PopulateFoodRepositoryUseCase
-) : BaseViewModel<MainScreenState>(MainScreenState()) {
+) : BaseViewModel() {
+
+    var screenState by mutableStateOf(MainScreenState())
+        private set
 
     init {
         viewModelScope.launch {
-            screenState = when (populateFoodRepositoryUseCase().isSuccess) {
+            val result = populateFoodRepositoryUseCase()
+            screenState = when (result.isSuccess) {
                 true -> screenState.copy(initialLoading = false)
                 false -> screenState.copy(initialLoading = false, error = ScreenError.DataLoadingFailed)
             }
