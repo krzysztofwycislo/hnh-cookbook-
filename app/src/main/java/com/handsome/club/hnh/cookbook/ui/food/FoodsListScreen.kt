@@ -3,7 +3,9 @@ package com.handsome.club.hnh.cookbook.ui.food
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -11,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.handsome.club.hnh.cookbook.base.paging.PageLazyColumn
 import com.handsome.club.hnh.cookbook.model.food.Food
 import com.handsome.club.hnh.cookbook.ui.base.ErrorScreen
+import com.handsome.club.hnh.cookbook.ui.common.MainToolbar
 import com.handsome.club.hnh.cookbook.ui.exampleFoods
 
 
@@ -43,17 +46,23 @@ fun FoodsList(
     selectedFoodId: Long?,
     loadPage: () -> Unit
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        PageLazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            loadPage = loadPage
+    Scaffold(
+        topBar = { MainToolbar("H&H Cookbook") }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(foods) {
-                val isSelected = it.id == selectedFoodId
-                FoodListItem(it, onClick, isSelected)
+            PageLazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                loadPage = loadPage
+            ) {
+                items(foods) {
+                    val isSelected = it.id == selectedFoodId
+                    FoodListItem(it, onClick, isSelected)
+                }
             }
         }
     }
