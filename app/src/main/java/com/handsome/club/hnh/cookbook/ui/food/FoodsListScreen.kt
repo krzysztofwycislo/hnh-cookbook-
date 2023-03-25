@@ -57,7 +57,7 @@ fun FoodsList(
         ) {
             PageLazyColumn(
                 modifier = Modifier.fillMaxWidth(),
-                loadPage = loadPage
+                loadPage = loadPage,
             ) {
                 items(foods) {
                     val isSelected = it.id == selectedFoodId

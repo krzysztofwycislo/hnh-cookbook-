@@ -10,7 +10,11 @@ data class Food(
     val energy: Int,
     val ingredients: List<Ingredient>,
     val feps: List<Fep>,
-)
+) {
+
+    val sortedFeps = feps.sortedBy { -it.value }
+
+}
 
 data class Ingredient(
     @Json(ignore = true) val id: Long = 0,
