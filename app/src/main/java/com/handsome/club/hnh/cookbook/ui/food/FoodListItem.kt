@@ -33,7 +33,7 @@ import com.handsome.club.hnh.cookbook.model.food.Fep
 import com.handsome.club.hnh.cookbook.model.food.Food
 import com.handsome.club.hnh.cookbook.model.food.Ingredient
 import com.handsome.club.hnh.cookbook.ui.createExampleFood
-import com.handsome.club.hnh.cookbook.ui.determineFepSignatureColors
+import com.handsome.club.hnh.cookbook.ui.fepHeaders
 import com.handsome.club.hnh.cookbook.ui.theme.HorSpacerM
 import com.handsome.club.hnh.cookbook.ui.theme.VertSpacerM
 
@@ -98,12 +98,7 @@ fun FoodListItem(food: Food, onClick: (Food) -> Unit, showIngredients: Boolean) 
 
             AnimatedVisibility(
                 showIngredients,
-
-                // Sets the initial height of the content to 20, revealing only the top of the content at
-                // the beginning of the expanding animation.
                 enter = expandVertically(expandFrom = Alignment.Top) { 20 },
-
-                // Shrinks the content to half of its full height via an animation.
                 exit = shrinkVertically(animationSpec = tween()) { 20 },
             ) {
                 IngredientsSimpleDisplay(food.ingredients)
@@ -139,21 +134,66 @@ fun IngredientsSimpleDisplay(ingredients: List<Ingredient>) {
 @Composable
 fun FepsSimpleDisplay(feps: List<Fep>) {
     Row(
-        Modifier.clip(RoundedCornerShape(16.dp))
+        Modifier.clip(RoundedCornerShape(8.dp))
     ) {
-        feps.forEach { fep ->
-            val fepInfo = determineFepSignatureColors(fep)
-
+        fepHeaders.forEach { fepHeader ->
             Column(
                 modifier = Modifier
-                    .background(fepInfo.color)
-                    .size(50.dp),
+                    .background(fepHeader.color)
+                    .padding(vertical = 6.dp)
+                    .weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(text = String.format("%.1f", fep.value))
+                val valueOne = feps.find { it.name.containsChars(fepHeader.shortName + "1") }
+                    ?.value
+                    ?.let { String.format("%.1f", it) }
+                    ?: ""
+
+                Text(text = valueOne)
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(text = fepInfo.shortName)
+
+                val valueSecond = feps.find { it.name.containsChars(fepHeader.shortName + "2") }
+                    ?.value
+                    ?.let { String.format("%.1f", it) }
+                    ?: ""
+                Text(text = valueSecond)
+            }
+        }
+    }
+}
+
+private fun String.containsChars(shortName: String): Boolean {
+    for (letter in shortName) {
+        if (contains(letter).not())
+            return false
+    }
+    return true
+}
+
+@Composable
+@Preview(showBackground = true)
+fun FoodItemViewPrev() {
+    FoodListItem(createExampleFood(10), {}, true)
+}
+
+@Composable
+fun FepsStickyHeader(
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp))
+    ) {
+        fepHeaders.forEach { fep ->
+            Column(
+                modifier = Modifier
+                    .background(fep.color)
+                    .padding(vertical = 6.dp)
+                    .weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = fep.shortName)
             }
         }
     }
@@ -161,6 +201,6 @@ fun FepsSimpleDisplay(feps: List<Fep>) {
 
 @Composable
 @Preview(showBackground = true)
-fun FoodItemViewPrev() {
-    FoodListItem(createExampleFood(10), {}, true)
+fun FepsStickyHeaderPrev() {
+    FepsStickyHeader()
 }

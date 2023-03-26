@@ -10,20 +10,27 @@ abstract class PagingUseCase : UseCase {
 
     private var paginationFlow = createPaginatedListFlow()
 
+    private var inProgress = true
 
     protected fun <T> pagingFlowOf(
         dispatcher: CoroutineDispatcher = Dispatchers.IO,
         loadPage: suspend (Pagination) -> T
     ): Flow<T> {
         return paginationFlow.map {
-            withContext(dispatcher) {
+            inProgress = true
+
+            val result = withContext(dispatcher) {
                 loadPage(it)
             }
+
+            inProgress = false
+            result
         }
     }
 
     suspend fun loadNextPage() {
-        paginationFlow.nextPage()
+        if (!inProgress)
+            paginationFlow.nextPage()
     }
 
     suspend fun refresh() {
@@ -32,9 +39,9 @@ abstract class PagingUseCase : UseCase {
 
 }
 
-fun createPaginatedListFlow() = PaginatedListFlow()
+private fun createPaginatedListFlow() = PaginatedListFlow()
 
-class PaginatedListFlow internal constructor(
+private class PaginatedListFlow(
     private val flow: MutableStateFlow<Pagination> = MutableStateFlow(Pagination()),
 ) : StateFlow<Pagination> by flow {
 

@@ -10,6 +10,7 @@ import com.handsome.club.hnh.cookbook.ui.base.BaseViewModel
 import com.handsome.club.hnh.cookbook.ui.base.ScreenError
 import com.handsome.club.hnh.cookbook.ui.base.ScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -49,8 +50,12 @@ class FoodListViewModel @Inject constructor(
         )
     }
 
+    private var loadPageJob: Job? = null
+
     fun loadNextPage() {
-        viewModelScope.launch {
+        if (loadPageJob?.isActive == true) return
+
+        loadPageJob = viewModelScope.launch {
             observeFoodsUseCase.loadNextPage()
         }
     }

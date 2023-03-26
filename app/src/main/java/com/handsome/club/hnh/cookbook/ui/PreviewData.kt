@@ -38,6 +38,10 @@ val fepSignatureColors = mapOf(
     "Psyche +2" to FepTypeData("psy2", Color(0xFFC48DFD)),
 )
 
+val fepHeaders = fepSignatureColors.values
+    .filter { it.shortName.contains("2").not() }
+    .sortedBy { it.shortName }
+
 fun determineFepSignatureColors(fep: Fep): FepTypeData = fepSignatureColors.getValue(fep.name)
 
 val exampleFoods = listOf(
