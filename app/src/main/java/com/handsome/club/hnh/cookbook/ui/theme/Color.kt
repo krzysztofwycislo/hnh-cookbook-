@@ -1,33 +1,31 @@
 package com.handsome.club.hnh.cookbook.ui.theme
 
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.Colors
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun colorsPalette(
     darkTheme: Boolean = isSystemInDarkTheme()
-): Colors {
-    return if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
+): ColorScheme =
+    when (val dynamicColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        (dynamicColor && darkTheme) -> dynamicDarkColorScheme(LocalContext.current)
+        (dynamicColor && darkTheme.not()) -> dynamicLightColorScheme(LocalContext.current)
+        darkTheme -> darkColorScheme
+        else -> lightColorScheme
     }
-}
 
-private val DarkColorPalette = darkColors(
+private val darkColorScheme = darkColorScheme(
     primary = Color.Black,
-    primaryVariant = Color.Black.copy(alpha = .5f),
     secondary = Color(0xFF5c1455),
     background = Color.Black,
 )
 
-private val LightColorPalette = lightColors(
+private val lightColorScheme = lightColorScheme(
     primary = Color.White,
-    primaryVariant = Color(0xFF4d5d53),
     onPrimary = Color.Black,
     secondary = Color(0xFF738678),
 )

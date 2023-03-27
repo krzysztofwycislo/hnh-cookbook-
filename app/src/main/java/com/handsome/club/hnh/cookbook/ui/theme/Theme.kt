@@ -1,6 +1,6 @@
 package com.handsome.club.hnh.cookbook.ui.theme
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 
 @Composable
@@ -10,7 +10,7 @@ fun HavenHearthCookbookTheme(
     val colors = colorsPalette()
 
     MaterialTheme(
-        colors = colors,
+        colorScheme = colors,
         typography = Typography,
         shapes = Shapes,
         content = content

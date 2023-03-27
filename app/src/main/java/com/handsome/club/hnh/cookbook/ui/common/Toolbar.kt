@@ -1,17 +1,17 @@
 package com.handsome.club.hnh.cookbook.ui.common
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.dp
 
 
+@ExperimentalMaterial3Api
 @Composable
 fun MainToolbar(title: String) {
     TopAppBar(
-        contentPadding = PaddingValues(start = 16.dp, end = 16.dp)
-    ) {
-        Text(text = title)
-    }
+        title = {
+            Text(text = title)
+        }
+    )
 }
