@@ -1,5 +1,6 @@
 package com.handsome.club.hnh.cookbook.model.food
 
+import com.handsome.club.hnh.cookbook.model.fep.Fep
 import com.squareup.moshi.Json
 
 data class Food(
@@ -20,10 +21,4 @@ data class Ingredient(
     @Json(ignore = true) val id: Long = 0,
     val name: String,
     val percentage: Int
-)
-
-data class Fep(
-    @Json(ignore = true) val id: Long = 0,
-    val name: String,
-    val value: Float
 )

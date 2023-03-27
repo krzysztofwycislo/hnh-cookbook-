@@ -1,7 +1,7 @@
 package com.handsome.club.hnh.cookbook.ui
 
 import androidx.compose.ui.graphics.Color
-import com.handsome.club.hnh.cookbook.model.food.Fep
+import com.handsome.club.hnh.cookbook.model.fep.Fep
 import com.handsome.club.hnh.cookbook.model.food.Food
 import com.handsome.club.hnh.cookbook.model.food.Ingredient
 import kotlin.random.Random
