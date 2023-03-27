@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalLayoutApi::class, ExperimentalLayoutApi::class, ExperimentalLayoutApi::class)
+
 package com.handsome.club.hnh.cookbook.ui.food
 
 import androidx.compose.animation.AnimatedVisibility
@@ -8,7 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -17,13 +19,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -33,9 +35,7 @@ import com.handsome.club.hnh.cookbook.model.fep.Fep
 import com.handsome.club.hnh.cookbook.model.food.Food
 import com.handsome.club.hnh.cookbook.model.food.Ingredient
 import com.handsome.club.hnh.cookbook.ui.createExampleFood
-import com.handsome.club.hnh.cookbook.ui.fepHeaders
-import com.handsome.club.hnh.cookbook.ui.theme.HorSpacerM
-import com.handsome.club.hnh.cookbook.ui.theme.VertSpacerM
+import com.handsome.club.hnh.cookbook.ui.theme.*
 
 private const val imagesUrl = "https://www.havenandhearth.com/mt/r/"
 
@@ -52,10 +52,10 @@ fun FoodListItem(food: Food, onClick: (Food) -> Unit, showIngredients: Boolean) 
     ) {
 
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp),
         ) {
             Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column {
@@ -85,32 +85,48 @@ fun FoodListItem(food: Food, onClick: (Food) -> Unit, showIngredients: Boolean) 
                     FepsSimpleDisplay(food.sortedFeps)
                 }
 
-                Icon(
-                    painter = painterResource(
-                        id = if (showIngredients) R.drawable.ic_arrow_down else R.drawable.ic_arrow_up,
-                    ),
-                    contentDescription = "",
-                    tint = Color.LightGray
-                )
             }
 
             VertSpacerM()
 
             AnimatedVisibility(
                 showIngredients,
-                enter = expandVertically(expandFrom = Alignment.Top) { 20 },
-                exit = shrinkVertically(animationSpec = tween()) { 20 },
+                enter = expandVertically(
+                    expandFrom = Alignment.Top,
+                    animationSpec = tween()
+                ) { 20 },
+                exit = shrinkVertically(
+                    shrinkTowards = Alignment.Top,
+                    animationSpec = tween()
+                ) { 20 },
             ) {
                 IngredientsSimpleDisplay(food.ingredients)
             }
 
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(Color.LightGray.copy(alpha = .5f))
-                    .alpha(0.3f)
-            )
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(2.dp)
+                        .background(Color.LightGray.copy(alpha = .3f)),
+                )
+
+                if (food.ingredients.any()) {
+                    Icon(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.background)
+                            .size(32.dp),
+                        painter = painterResource(
+                            id = if (showIngredients) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down,
+                        ),
+                        contentDescription = "",
+                        tint = Color.LightGray.copy(alpha = .3f)
+                    )
+                }
+            }
         }
     }
 }
@@ -122,53 +138,79 @@ fun IngredientsSimpleDisplay(ingredients: List<Ingredient>) {
         ingredients.forEach {
             Row {
                 Text(text = "${it.percentage}%")
-                Spacer(modifier = Modifier.width(8.dp))
+
+                VertSpacerXS()
+
                 Text(text = it.name)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            VertSpacerM()
         }
     }
 }
 
 @Composable
 fun FepsSimpleDisplay(feps: List<Fep>) {
-    Row(
-        Modifier.clip(RoundedCornerShape(8.dp))
+    val groupedFeps = feps.groupBy { it.type::class }
+
+    val itemsInRow = 5
+
+    FlowRow(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceAround,
+        maxItemsInEachRow = itemsInRow
     ) {
-        fepHeaders.forEach { fepHeader ->
-            Column(
-                modifier = Modifier
-                    .background(fepHeader.color)
-                    .padding(vertical = 6.dp)
-                    .weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+        repeat(feps.size + itemsInRow - feps.size.mod(itemsInRow)) { index ->
+            Box(
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.Center
             ) {
-                val valueOne = feps.find { it.name.containsChars(fepHeader.shortName + "1") }
-                    ?.value
-                    ?.let { String.format("%.1f", it) }
-                    ?: ""
-
-                Text(text = valueOne)
-                Spacer(modifier = Modifier.width(4.dp))
-
-                val valueSecond = feps.find { it.name.containsChars(fepHeader.shortName + "2") }
-                    ?.value
-                    ?.let { String.format("%.1f", it) }
-                    ?: ""
-                Text(text = valueSecond)
+                groupedFeps.values
+                    .sortedBy { -it.size }
+                    .getOrNull(index)
+                    ?.let { FepIndicator(it) }
             }
         }
     }
 }
 
-private fun String.containsChars(shortName: String): Boolean {
-    for (letter in shortName) {
-        if (contains(letter).not())
-            return false
+@Composable
+fun FepIndicator(feps: List<Fep>) {
+    Column(
+        modifier = Modifier
+            .padding(vertical = 6.dp)
+            .width(IntrinsicSize.Min),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+
+        val someFep = feps.first()
+
+        Box(
+            modifier = Modifier
+                .clip(CircleShape)
+                .aspectRatio(1f)
+                .background(someFep.type.determineFepSignatureColor())
+                .padding(4.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = someFep.type.getShortName().take(3),
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
+        feps.sortedBy { it.type.statReward }.forEachIndexed { index, fep ->
+            VertSpacerXXS()
+            Text(
+                text = String.format("%.2f", fep.value),
+                fontWeight = FontWeight.Bold.takeIf { index > 0 }
+            )
+        }
     }
-    return true
 }
 
 @Composable
