@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.handsome.club.hnh.cookbook.R
-import com.handsome.club.hnh.cookbook.model.food.Fep
+import com.handsome.club.hnh.cookbook.model.fep.Fep
 import com.handsome.club.hnh.cookbook.model.food.Food
 import com.handsome.club.hnh.cookbook.model.food.Ingredient
 import com.handsome.club.hnh.cookbook.ui.createExampleFood
