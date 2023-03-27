@@ -176,31 +176,3 @@ private fun String.containsChars(shortName: String): Boolean {
 fun FoodItemViewPrev() {
     FoodListItem(createExampleFood(10), {}, true)
 }
-
-@Composable
-fun FepsStickyHeader(
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier.clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp))
-    ) {
-        fepHeaders.forEach { fep ->
-            Column(
-                modifier = Modifier
-                    .background(fep.color)
-                    .padding(vertical = 6.dp)
-                    .weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(text = fep.shortName)
-            }
-        }
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun FepsStickyHeaderPrev() {
-    FepsStickyHeader()
-}
