@@ -190,6 +190,7 @@ fun FepIndicator(feps: List<Fep>) {
         Box(
             modifier = Modifier
                 .clip(CircleShape)
+                .fillMaxWidth()
                 .aspectRatio(1f)
                 .background(someFep.type.determineFepSignatureColor())
                 .padding(4.dp),
