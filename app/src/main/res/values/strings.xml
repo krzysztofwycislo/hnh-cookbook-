@@ -3,4 +3,5 @@
     <string name="foods_list_title">Foods</string>
     <string name="food_image">Food image</string>
     <string name="data_loading_failed_message">Something went wrong with our data</string>
+    <string name="expand_icon">Expand icon</string>
 </resources>

@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.handsome.club.hnh.cookbook.model.fep.FepType
+import kotlin.reflect.KClass
 
 @Composable
 fun colorsPalette(
@@ -43,4 +44,4 @@ private val fepSignatureColors = mapOf(
     FepType.Psyche::class to Color(0xFFC48DFD),
 )
 
-fun FepType.determineFepSignatureColor(): Color = fepSignatureColors.getValue(this::class)
+fun KClass<out FepType>.determineFepSignatureColor(): Color = fepSignatureColors.getValue(this)
