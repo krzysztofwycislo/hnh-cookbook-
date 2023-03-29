@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalLayoutApi::class, ExperimentalLayoutApi::class, ExperimentalLayoutApi::class)
-
 package com.handsome.club.hnh.cookbook.ui.food
 
 import androidx.compose.animation.AnimatedVisibility
