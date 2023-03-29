@@ -3,6 +3,7 @@ package com.handsome.club.hnh.cookbook.ui.food.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,16 +12,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.handsome.club.hnh.cookbook.base.calculations.getRemainder
 import com.handsome.club.hnh.cookbook.model.fep.Fep
 import com.handsome.club.hnh.cookbook.model.fep.FepType
+import com.handsome.club.hnh.cookbook.ui.FoodMocks
+import com.handsome.club.hnh.cookbook.ui.base.withAlpha
+import com.handsome.club.hnh.cookbook.ui.theme.HavenHearthCookbookTheme
 import com.handsome.club.hnh.cookbook.ui.theme.VertSpacerXXS
 import com.handsome.club.hnh.cookbook.ui.theme.determineFepSignatureColor
 import kotlin.reflect.KClass
 
 private const val FEPS_ROW_SIZE = 5
 
-@ExperimentalLayoutApi
 @Composable
 fun FepsList(
     feps: List<Fep>,
@@ -31,39 +36,47 @@ fun FepsList(
         .toList()
         .sortedBy { -it.second.size }
 
-    val allItemsCount = feps.size + itemsInRow - feps.size.mod(itemsInRow)
-
     FlowRow(
         modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceAround,
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant.withAlpha(.5f))
+            .padding(vertical = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         maxItemsInEachRow = itemsInRow
     ) {
-        repeat(allItemsCount) { index ->
-            Box(
-                modifier = Modifier.weight(1f),
-                contentAlignment = Alignment.Center
-            ) {
-                groupedFeps.getOrNull(index)
-                    ?.let { FepIndicator(it.first, it.second) }
-            }
+        repeat(groupedFeps.size) { index ->
+            val currentFep = groupedFeps[index]
+            FepIndicator(
+                modifier = Modifier
+                    .padding(vertical = 6.dp)
+                    .weight(1f),
+                typeClass = currentFep.first,
+                feps = currentFep.second,
+            )
+        }
+
+        repeat(groupedFeps.size.getRemainder(itemsInRow)) {
+            Box(modifier = Modifier.weight(1f))
         }
     }
 }
 
 @Composable
-private fun FepIndicator(typeClass: KClass<out FepType>, feps: List<Fep>) {
+private fun FepIndicator(
+    modifier: Modifier,
+    typeClass: KClass<out FepType>,
+    feps: List<Fep>,
+) {
     Column(
-        modifier = Modifier
-            .padding(vertical = 6.dp)
-            .width(IntrinsicSize.Min),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Box(
             modifier = Modifier
                 .clip(CircleShape)
-                .fillMaxWidth()
+                .fillMaxWidth(.60f)
                 .aspectRatio(1f)
                 .background(typeClass.determineFepSignatureColor())
                 .padding(4.dp),
@@ -78,11 +91,25 @@ private fun FepIndicator(typeClass: KClass<out FepType>, feps: List<Fep>) {
         }
 
         feps.sortedBy { it.type.statReward }.forEachIndexed { index, fep ->
+            val fepText = when {
+                fep.value > 999 -> "+999"
+                fep.value >= 100 -> String.format("%.0f", fep.value)
+                else -> String.format("%.2f", fep.value)
+            }
+
             VertSpacerXXS()
             Text(
-                text = String.format("%.2f", fep.value),
+                text = fepText,
                 fontWeight = FontWeight.Bold.takeIf { index > 0 }
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun FepsListPrev() = with(FoodMocks) {
+    HavenHearthCookbookTheme {
+        FepsList(feps = exampleFeps)
     }
 }

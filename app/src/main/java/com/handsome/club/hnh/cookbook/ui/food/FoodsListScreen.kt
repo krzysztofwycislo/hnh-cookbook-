@@ -15,9 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.handsome.club.hnh.cookbook.base.paging.PageLazyColumn
 import com.handsome.club.hnh.cookbook.model.food.Food
+import com.handsome.club.hnh.cookbook.ui.FoodMocks
 import com.handsome.club.hnh.cookbook.ui.base.ErrorScreen
 import com.handsome.club.hnh.cookbook.ui.common.MainToolbar
-import com.handsome.club.hnh.cookbook.ui.exampleFoods
+import com.handsome.club.hnh.cookbook.ui.theme.HavenHearthCookbookTheme
 
 
 @Composable
@@ -74,11 +75,13 @@ fun FoodsList(
 
 @Preview(showBackground = true)
 @Composable
-fun FoodsListScreenPrev() {
-    FoodsList(
-        foods = exampleFoods,
-        onClick = {},
-        selectedFoodId = 1,
-        loadPage = {}
-    )
+fun FoodsListScreenPrev() = with(FoodMocks) {
+    HavenHearthCookbookTheme {
+        FoodsList(
+            foods = exampleFoods,
+            onClick = {},
+            selectedFoodId = 1,
+            loadPage = {}
+        )
+    }
 }

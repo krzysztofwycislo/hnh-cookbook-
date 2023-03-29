@@ -30,10 +30,11 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.handsome.club.hnh.cookbook.R
 import com.handsome.club.hnh.cookbook.model.food.Food
+import com.handsome.club.hnh.cookbook.ui.FoodMocks
 import com.handsome.club.hnh.cookbook.ui.base.withAlpha
-import com.handsome.club.hnh.cookbook.ui.createExampleFood
 import com.handsome.club.hnh.cookbook.ui.food.components.FepsList
 import com.handsome.club.hnh.cookbook.ui.food.components.IngredientsList
+import com.handsome.club.hnh.cookbook.ui.theme.HavenHearthCookbookTheme
 import com.handsome.club.hnh.cookbook.ui.theme.HorSpacerM
 import com.handsome.club.hnh.cookbook.ui.theme.VertSpacerM
 import com.handsome.club.hnh.cookbook.ui.theme.VertSpacerXS
@@ -41,7 +42,11 @@ import com.handsome.club.hnh.cookbook.ui.theme.VertSpacerXS
 private const val imagesUrl = "https://www.havenandhearth.com/mt/r/"
 
 @Composable
-fun FoodListItem(food: Food, onClick: (Food) -> Unit, showIngredients: Boolean) {
+fun FoodListItem(
+    food: Food,
+    onClick: (Food) -> Unit,
+    showIngredients: Boolean
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -57,7 +62,9 @@ fun FoodListItem(food: Food, onClick: (Food) -> Unit, showIngredients: Boolean) 
 
         VertSpacerM()
 
-        FepsList(food.sortedFeps)
+        FepsList(
+            feps = food.sortedFeps
+        )
 
         VertSpacerXS()
 
@@ -144,6 +151,12 @@ fun FoodFooter(
 
 @Composable
 @Preview(showBackground = true)
-fun FoodItemViewPrev() {
-    FoodListItem(createExampleFood(10), {}, true)
+fun FoodItemViewPrev() = with(FoodMocks) {
+    HavenHearthCookbookTheme {
+        FoodListItem(
+            food = createExampleFood(10),
+            onClick = {},
+            showIngredients = true
+        )
+    }
 }
