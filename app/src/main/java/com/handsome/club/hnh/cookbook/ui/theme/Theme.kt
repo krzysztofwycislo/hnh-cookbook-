@@ -8,10 +8,11 @@ fun HavenHearthCookbookTheme(
     content: @Composable () -> Unit
 ) {
     val colors = colorsPalette()
+    val typography = typography()
 
     MaterialTheme(
         colorScheme = colors,
-        typography = Typography,
+        typography = typography,
         shapes = Shapes,
         content = content
     )
