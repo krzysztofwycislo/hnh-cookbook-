@@ -1,6 +1,6 @@
 package com.handsome.club.hnh.cookbook.model.food
 
-import com.handsome.club.hnh.cookbook.data.database.FoodEntity
+import com.handsome.club.hnh.cookbook.data.database.food.FoodEntity
 
 interface FoodsSource {
 

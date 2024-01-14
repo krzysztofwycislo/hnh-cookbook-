@@ -1,8 +1,8 @@
 package com.handsome.club.hnh.cookbook.model.food
 
 import com.handsome.club.hnh.cookbook.base.paging.PagingUseCase
-import com.handsome.club.hnh.cookbook.data.database.FoodDao
-import com.handsome.club.hnh.cookbook.data.database.FoodMapper
+import com.handsome.club.hnh.cookbook.data.database.food.FoodDao
+import com.handsome.club.hnh.cookbook.data.database.food.FoodMapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject

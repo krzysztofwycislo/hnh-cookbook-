@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.handsome.club.hnh.cookbook.model.food.Food
 import com.handsome.club.hnh.cookbook.model.food.ObserveFoodsUseCase
+import com.handsome.club.hnh.cookbook.model.food.ToggleFavoriteFoodUseCase
 import com.handsome.club.hnh.cookbook.ui.base.BaseViewModel
 import com.handsome.club.hnh.cookbook.ui.base.ScreenError
 import com.handsome.club.hnh.cookbook.ui.base.ScreenState
@@ -23,6 +24,7 @@ data class FoodListScreenState(
 @HiltViewModel
 class FoodListViewModel @Inject constructor(
     private val observeFoodsUseCase: ObserveFoodsUseCase,
+    private val toggleFavoriteFoodUseCase: ToggleFavoriteFoodUseCase
 ) : BaseViewModel() {
 
     var screenState by mutableStateOf(FoodListScreenState())
@@ -48,6 +50,12 @@ class FoodListViewModel @Inject constructor(
         screenState = screenState.copy(
             selectedFoodId = food.id.takeIf { food.id != screenState.selectedFoodId }
         )
+    }
+
+    fun toggleFavorite(food: Food) {
+        viewModelScope.launch {
+            toggleFavoriteFoodUseCase(food.id)
+        }
     }
 
     private var loadPageJob: Job? = null

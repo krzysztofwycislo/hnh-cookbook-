@@ -2,7 +2,7 @@ package com.handsome.club.hnh.cookbook.data.local
 
 import android.content.res.Resources
 import com.handsome.club.hnh.cookbook.R
-import com.handsome.club.hnh.cookbook.data.database.FoodEntity
+import com.handsome.club.hnh.cookbook.data.database.food.FoodEntity
 import com.handsome.club.hnh.cookbook.model.food.FoodsSource
 import com.handsome.club.hnh.cookbook.utils.loadJsonFromRawResource
 import com.squareup.moshi.JsonAdapter

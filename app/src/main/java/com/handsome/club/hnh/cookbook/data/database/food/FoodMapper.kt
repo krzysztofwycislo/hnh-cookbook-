@@ -1,4 +1,4 @@
-package com.handsome.club.hnh.cookbook.data.database
+package com.handsome.club.hnh.cookbook.data.database.food
 
 import com.handsome.club.hnh.cookbook.model.fep.Fep
 import com.handsome.club.hnh.cookbook.model.food.Food

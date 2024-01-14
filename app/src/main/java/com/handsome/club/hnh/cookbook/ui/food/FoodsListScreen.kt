@@ -12,8 +12,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,9 +51,10 @@ fun FoodsListScreen(viewModel: FoodListViewModel) {
             state.foods != null ->
                 FoodsList(
                     foods = state.foods,
-                    onClick = viewModel::onFoodSelection,
                     selectedFoodId = state.selectedFoodId,
-                    loadPage = viewModel::loadNextPage
+                    onClick = viewModel::onFoodSelection,
+                    loadPage = viewModel::loadNextPage,
+                    toggleFavorite = viewModel::toggleFavorite,
                 )
         }
     }
@@ -56,7 +65,8 @@ fun FoodsList(
     foods: List<Food>,
     onClick: (Food) -> Unit,
     selectedFoodId: Long?,
-    loadPage: () -> Unit
+    loadPage: () -> Unit,
+    toggleFavorite: (Food) -> Unit,
 ) {
     val listState = rememberLazyListState()
 
@@ -92,8 +102,14 @@ fun FoodsList(
                 state = listState
             ) {
                 items(foods) {
-                    val isSelected = it.id == selectedFoodId
-                    FoodListItem(it, onClick, isSelected)
+                    val isSelected = remember(selectedFoodId) { it.id == selectedFoodId }
+
+                    FoodListItem(
+                        food = it,
+                        ingredientsVisible = isSelected,
+                        onClick = onClick,
+                        toggleFavorite = toggleFavorite
+                    )
                 }
             }
         }
@@ -129,7 +145,8 @@ fun FoodsListScreenPrev() = with(FoodMocks) {
             foods = exampleFoods,
             onClick = {},
             selectedFoodId = 1,
-            loadPage = {}
+            loadPage = {},
+            toggleFavorite = {},
         )
     }
 }

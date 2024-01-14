@@ -7,7 +7,17 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -43,7 +53,8 @@ private const val imagesUrl = "https://www.havenandhearth.com/mt/r/"
 fun FoodListItem(
     food: Food,
     onClick: (Food) -> Unit,
-    showIngredients: Boolean
+    toggleFavorite: (Food) -> Unit,
+    ingredientsVisible: Boolean
 ) {
     Column(
         modifier = Modifier
@@ -51,12 +62,15 @@ fun FoodListItem(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 onClick = { onClick(food) },
-                indication = rememberRipple(bounded = true, color = Color.LightGray, radius = 300.dp),
+                indication = rememberRipple(bounded = true, color = Color.LightGray),
             )
             .padding(top = 16.dp, start = 16.dp, end = 16.dp)
     ) {
 
-        FoodHeader(food)
+        FoodHeader(
+            food = food,
+            toggleFavorite = toggleFavorite
+        )
 
         VertSpacerM()
 
@@ -67,7 +81,7 @@ fun FoodListItem(
         VertSpacerXS()
 
         AnimatedVisibility(
-            showIngredients,
+            ingredientsVisible,
             enter = expandVertically(
                 expandFrom = Alignment.Top,
                 animationSpec = tween()
@@ -80,12 +94,15 @@ fun FoodListItem(
             IngredientsList(food.ingredients)
         }
 
-        FoodFooter(food, showIngredients)
+        FoodFooter(food, ingredientsVisible)
     }
 }
 
 @Composable
-fun FoodHeader(food: Food) {
+fun FoodHeader(
+    food: Food,
+    toggleFavorite: (Food) -> Unit
+) {
     Row(
         modifier = Modifier
             .height(IntrinsicSize.Max)
@@ -100,12 +117,30 @@ fun FoodHeader(food: Food) {
                 .build(),
             contentDescription = stringResource(R.string.food_image),
             contentScale = ContentScale.FillHeight,
-            modifier = Modifier.fillMaxHeight()
+            modifier = Modifier.fillMaxHeight(),
         )
 
         HorSpacerM()
 
         Text(text = food.itemName, style = MaterialTheme.typography.titleLarge)
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        val favoriteIconId = R.drawable.ic_favorite
+
+        Icon(
+            modifier = Modifier
+                .fillMaxHeight()
+                .aspectRatio(1f)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    onClick = { toggleFavorite(food) },
+                    indication = rememberRipple(bounded = false),
+                ),
+            painter = painterResource(id = favoriteIconId),
+            contentDescription = stringResource(id = R.string.favorite_icon),
+            tint = MaterialTheme.colorScheme.secondary
+        )
     }
 }
 
@@ -153,8 +188,9 @@ fun FoodItemViewPrev() = with(FoodMocks) {
     HavenHearthCookbookTheme {
         FoodListItem(
             food = createExampleFood(10),
+            ingredientsVisible = true,
             onClick = {},
-            showIngredients = true
+            toggleFavorite = {}
         )
     }
 }

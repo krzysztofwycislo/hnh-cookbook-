@@ -1,7 +1,12 @@
-package com.handsome.club.hnh.cookbook.data.database
+package com.handsome.club.hnh.cookbook.data.database.food
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
 import com.handsome.club.hnh.cookbook.base.paging.Pagination
+import com.handsome.club.hnh.cookbook.data.database.food.favorite.FavoriteFoodEntity
 import com.handsome.club.hnh.cookbook.utils.forEachApply
 import com.handsome.club.hnh.cookbook.utils.forEachIndexedApply
 
@@ -57,5 +62,27 @@ interface FoodDao {
 
     @Query("SELECT * FROM foods LIMIT 1")
     suspend fun getFirstFood(): FoodEntity?
+
+    // Favorite Foods
+    suspend fun toggleFavoriteFood(foodId: Long): Boolean {
+        val favoriteFood = getFavoriteFood(foodId)
+
+        return if (favoriteFood == null) {
+            insertFavoriteFood(FavoriteFoodEntity(foodId))
+            true
+        } else {
+            deleteFavoriteFood(favoriteFood.favoriteId)
+            false
+        }
+    }
+
+    @Query("DELETE FROM favorite_food WHERE favorite_id = :favoriteId")
+    fun deleteFavoriteFood(favoriteId: Long)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertFavoriteFood(favoriteFoodEntity: FavoriteFoodEntity)
+
+    @Query("SELECT * FROM favorite_food WHERE foodId = :foodId LIMIT 1")
+    suspend fun getFavoriteFood(foodId: Long): FavoriteFoodEntity?
 
 }

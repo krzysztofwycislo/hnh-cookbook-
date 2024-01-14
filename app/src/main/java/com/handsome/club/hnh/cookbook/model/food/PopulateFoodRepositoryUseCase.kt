@@ -1,6 +1,6 @@
 package com.handsome.club.hnh.cookbook.model.food
 
-import com.handsome.club.hnh.cookbook.data.database.FoodDao
+import com.handsome.club.hnh.cookbook.data.database.food.FoodDao
 import com.handsome.club.hnh.cookbook.infrastructure.UseCase
 import com.handsome.club.hnh.cookbook.utils.getExecutionTime
 import kotlinx.coroutines.Dispatchers

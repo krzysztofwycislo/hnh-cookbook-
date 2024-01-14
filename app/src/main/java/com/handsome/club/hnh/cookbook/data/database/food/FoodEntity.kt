@@ -1,6 +1,11 @@
-package com.handsome.club.hnh.cookbook.data.database
+package com.handsome.club.hnh.cookbook.data.database.food
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
+import androidx.room.Relation
 
 @Entity(tableName = "foods")
 data class FoodEntity(
