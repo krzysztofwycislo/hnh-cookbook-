@@ -6,6 +6,7 @@ import com.handsome.club.hnh.cookbook.data.database.food.FepEntity
 import com.handsome.club.hnh.cookbook.data.database.food.FoodDao
 import com.handsome.club.hnh.cookbook.data.database.food.FoodEntity
 import com.handsome.club.hnh.cookbook.data.database.food.IngredientEntity
+import com.handsome.club.hnh.cookbook.data.database.food.favorite.FavoriteFoodDao
 import com.handsome.club.hnh.cookbook.data.database.food.favorite.FavoriteFoodEntity
 
 @Database(
@@ -20,5 +21,7 @@ import com.handsome.club.hnh.cookbook.data.database.food.favorite.FavoriteFoodEn
 abstract class MainDatabase : RoomDatabase() {
 
     abstract fun foodDao(): FoodDao
+
+    abstract fun favoriteFoodDao(): FavoriteFoodDao
 
 }
