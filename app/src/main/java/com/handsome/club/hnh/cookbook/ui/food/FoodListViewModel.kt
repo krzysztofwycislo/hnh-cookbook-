@@ -38,6 +38,7 @@ class FoodListViewModel @Inject constructor(
     private fun observe() = with(viewModelScope) {
         launch {
             observeFoodsUseCase().collect {
+                // TODO refactor favorite collection
                 screenState = screenState.copy(
                     error = null,
                     foods = it
