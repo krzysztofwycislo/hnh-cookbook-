@@ -7,7 +7,9 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.handsome.club.hnh.cookbook.base.paging.Pagination
 import com.handsome.club.hnh.cookbook.utils.forEachApply
-import com.handsome.club.hnh.cookbook.utils.forEachIndexedApply
+import com.handsome.club.hnh.cookbook.utils.logExecutionTime
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @Dao
 interface FoodDao {
@@ -18,15 +20,51 @@ interface FoodDao {
     suspend fun insertFoods(foods: List<FoodEntity>) {
         val foodIds = bulkFoodInsert(foods)
 
-        foods.forEachIndexedApply { index, food ->
-            val foodId = foodIds[index]
-            food.ingredients
-                .forEachApply { it.foodId = foodId }
-                .let { bulkIngredientInsert(it) }
+        coroutineScope {
+            launch {
+                val ingredients = logExecutionTime("ING MAP") {
+                    foods.flatMapIndexed { index, food ->
+                        val foodId = foodIds[index]
+                        food.ingredients.forEachApply { it.foodId = foodId }
+                    }
+                }
 
-            food.feps
-                .forEachApply { it.foodId = foodId }
-                .let { bulkFepInsert(it) }
+                logExecutionTime("ING BULK") {
+                    bulkIngredientInsert(ingredients)
+                }
+            }
+
+            launch {
+                val feps = logExecutionTime("FEP MAP") {
+                    foods.flatMapIndexed { index, food ->
+                        val foodId = foodIds[index]
+                        food.feps.forEachApply { it.foodId = foodId }
+                    }
+                }
+
+                logExecutionTime("FEP BULK") {
+                    bulkFepInsert(feps)
+                }
+            }
+
+//            foods.forEachIndexedApply { index, food ->
+//                val foodId = foodIds[index]
+//                launch {
+//                    logExecutionTime("ING $foodId") {
+//                        food.ingredients
+//                            .forEachApply { it.foodId = foodId }
+//                            .let { bulkIngredientInsert(it) }
+//                    }
+//                }
+//
+//                launch {
+//                    logExecutionTime("FEP $foodId") {
+//                        food.feps
+//                            .forEachApply { it.foodId = foodId }
+//                            .let { bulkFepInsert(it) }
+//                    }
+//                }
+//            }
         }
     }
 

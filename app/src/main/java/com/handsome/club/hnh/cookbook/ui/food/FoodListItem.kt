@@ -139,7 +139,7 @@ fun FoodHeader(
                 ),
             painter = painterResource(id = favoriteIconId),
             contentDescription = stringResource(id = R.string.favorite_icon),
-            tint = MaterialTheme.colorScheme.secondary
+            tint = MaterialTheme.colorScheme.secondary.withAlpha(if (food.isFavorite) .8f else .3f)
         )
     }
 }

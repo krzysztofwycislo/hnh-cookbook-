@@ -1,3 +1,4 @@
 package com.handsome.club.hnh.cookbook.utils
 
-typealias Seconds = Int
+typealias Seconds = Long
+typealias Millis = Long

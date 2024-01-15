@@ -16,7 +16,7 @@ import com.handsome.club.hnh.cookbook.data.database.food.favorite.FavoriteFoodEn
         FepEntity::class,
         FavoriteFoodEntity::class,
     ],
-    version = 16
+    version = 17
 )
 abstract class MainDatabase : RoomDatabase() {
 

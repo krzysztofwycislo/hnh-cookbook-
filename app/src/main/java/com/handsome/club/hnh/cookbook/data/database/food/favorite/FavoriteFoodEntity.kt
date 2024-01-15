@@ -9,6 +9,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "favorite_food")
 data class FavoriteFoodEntity(
 
+    @ColumnInfo(name = "food_id")
     val foodId: Long,
 
     ) {

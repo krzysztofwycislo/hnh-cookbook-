@@ -31,7 +31,7 @@ object FoodMocks {
             Fep(initialId + 4, "Psyche +1", 0F)
         )
 
-        return Food(seed.toLong(), "Food Example $seed", "resource$seed", seed.toFloat(), seed * 200, ingredients, feps)
+        return Food(seed.toLong(), "Food Example $seed", "resource$seed", seed.toFloat(), seed * 200, ingredients, feps, seed % 2 == 0)
     }
 
     val exampleFeps = exampleFoods.first().feps

@@ -19,13 +19,14 @@ class FoodMapper @Inject constructor() {
     fun toModels(entities: List<FoodEntity>) = entities.map {
         with(it) {
             Food(
-                foodId,
-                itemName,
-                resourceName,
-                hunger,
-                energy,
-                ingredients.toIngredientModels(),
-                feps.toFepModels()
+                id = foodId,
+                itemName = itemName,
+                resourceName = resourceName,
+                hunger = hunger,
+                energy = energy,
+                ingredients = ingredients.toIngredientModels(),
+                feps = feps.toFepModels(),
+                isFavorite = isFavorite
             )
         }
     }

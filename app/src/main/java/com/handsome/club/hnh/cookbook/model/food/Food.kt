@@ -11,6 +11,7 @@ data class Food(
     val energy: Int,
     val ingredients: List<Ingredient>,
     val feps: List<Fep>,
+    val isFavorite: Boolean
 ) {
 
     val sortedFeps = feps.sortedBy { -it.value }

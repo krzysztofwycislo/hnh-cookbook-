@@ -9,7 +9,7 @@ import androidx.room.Transaction
 @Dao
 interface FavoriteFoodDao {
 
-    @Query("SELECT * FROM favorite_food WHERE foodId = :foodId LIMIT 1")
+    @Query("SELECT * FROM favorite_food WHERE food_id = :foodId LIMIT 1")
     suspend fun getFavoriteFood(foodId: Long): FavoriteFoodEntity?
 
     @Transaction

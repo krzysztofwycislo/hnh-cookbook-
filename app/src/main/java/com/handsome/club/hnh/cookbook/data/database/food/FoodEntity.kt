@@ -6,8 +6,11 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import com.handsome.club.hnh.cookbook.data.database.food.favorite.FavoriteFoodEntity
+import com.squareup.moshi.JsonClass
 
 @Entity(tableName = "foods")
+@JsonClass(generateAdapter = true)
 data class FoodEntity(
 
     @ColumnInfo(name = "item_name")
@@ -32,9 +35,13 @@ data class FoodEntity(
     @Ignore
     lateinit var feps: List<FepEntity>
 
+    @Ignore
+    var isFavorite: Boolean = false
+
 }
 
 @Entity(tableName = "ingredients")
+@JsonClass(generateAdapter = true)
 data class IngredientEntity(
     val name: String,
     val percentage: Int
@@ -50,6 +57,7 @@ data class IngredientEntity(
 }
 
 @Entity(tableName = "feps")
+@JsonClass(generateAdapter = true)
 data class FepEntity(
     val name: String,
     val value: Float
@@ -77,12 +85,20 @@ data class FoodRecipe(
         parentColumn = "food_id",
         entityColumn = "food_id",
     )
-    val feps: List<FepEntity>
+    val feps: List<FepEntity>,
+
+    @Relation(
+        parentColumn = "food_id",
+        entityColumn = "food_id",
+    )
+    val favorite: List<FavoriteFoodEntity>
+
 ) {
 
     init {
         food.ingredients = ingredients
         food.feps = feps
+        food.isFavorite = favorite.isNotEmpty()
     }
 
 }
