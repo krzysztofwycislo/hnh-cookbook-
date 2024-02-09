@@ -5,13 +5,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.handsome.club.hnh.cookbook.model.food.Food
+import com.handsome.club.hnh.cookbook.model.food.FoodFilters
 import com.handsome.club.hnh.cookbook.model.food.ObserveFoodsUseCase
 import com.handsome.club.hnh.cookbook.model.food.ToggleFavoriteFoodUseCase
 import com.handsome.club.hnh.cookbook.ui.base.BaseViewModel
 import com.handsome.club.hnh.cookbook.ui.base.ScreenError
 import com.handsome.club.hnh.cookbook.ui.base.ScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,14 +34,19 @@ class FoodListViewModel @Inject constructor(
     var screenState by mutableStateOf(FoodListScreenState())
         private set
 
+    private val filters = MutableStateFlow(FoodFilters.DEFAULT)
+
 
     init {
         observe()
     }
 
+    @OptIn(FlowPreview::class)
     private fun observe() = with(viewModelScope) {
         launch {
-            observeFoodsUseCase().collect {
+            filters.flatMapMerge {
+                observeFoodsUseCase(it)
+            }.collect {
                 // TODO refactor favorite collection
                 screenState = screenState.copy(
                     error = null,
@@ -47,15 +56,21 @@ class FoodListViewModel @Inject constructor(
         }
     }
 
-    fun onFoodSelection(food: Food) {
+    fun onFoodSelection(selectedFood: Food) {
         screenState = screenState.copy(
-            selectedFoodId = food.id.takeIf { food.id != screenState.selectedFoodId }
+            selectedFoodId = selectedFood.id.takeIf { selectedFood.id != screenState.selectedFoodId }
         )
     }
 
     fun toggleFavorite(food: Food) {
         viewModelScope.launch {
             toggleFavoriteFoodUseCase(food.id)
+        }
+    }
+
+    fun applyFilters(newFilters: FoodFilters) {
+        viewModelScope.launch {
+            filters.emit(newFilters)
         }
     }
 

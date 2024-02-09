@@ -1,6 +1,5 @@
 package com.handsome.club.hnh.cookbook.model.food
 
-import com.handsome.club.hnh.cookbook.data.database.food.FoodDao
 import com.handsome.club.hnh.cookbook.infrastructure.UseCase
 import com.handsome.club.hnh.cookbook.infrastructure.tryUseCase
 import com.handsome.club.hnh.cookbook.utils.logExecutionTime
@@ -9,7 +8,7 @@ import javax.inject.Inject
 
 
 class PopulateFoodRepositoryUseCase @Inject constructor(
-    private val persistance: FoodDao,
+    private val persistance: FoodPersistance,
     private val source: FoodsSource,
 ) : UseCase {
 

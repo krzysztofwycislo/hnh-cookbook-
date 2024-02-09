@@ -29,6 +29,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.handsome.club.hnh.cookbook.R
 import com.handsome.club.hnh.cookbook.base.paging.PageLazyColumn
+import com.handsome.club.hnh.cookbook.infrastructure.AppDestination
+import com.handsome.club.hnh.cookbook.infrastructure.AppNavigation
 import com.handsome.club.hnh.cookbook.model.food.Food
 import com.handsome.club.hnh.cookbook.ui.FoodMocks
 import com.handsome.club.hnh.cookbook.ui.base.ErrorScreen
@@ -38,7 +40,10 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun FoodsListScreen(viewModel: FoodListViewModel) {
+fun FoodsListScreen(
+    viewModel: FoodListViewModel,
+    navigation: AppNavigation
+) {
     val state = viewModel.screenState
 
     Column {
@@ -55,6 +60,11 @@ fun FoodsListScreen(viewModel: FoodListViewModel) {
                     onClick = viewModel::onFoodSelection,
                     loadPage = viewModel::loadNextPage,
                     toggleFavorite = viewModel::toggleFavorite,
+                    onFiltersClick = {
+                        navigation.navigateTo(
+                            AppDestination.FoodFilterScreen(viewModel::applyFilters)
+                        )
+                    }
                 )
         }
     }
@@ -67,6 +77,7 @@ fun FoodsList(
     selectedFoodId: Long?,
     loadPage: () -> Unit,
     toggleFavorite: (Food) -> Unit,
+    onFiltersClick: () -> Unit
 ) {
     val listState = rememberLazyListState()
 
@@ -77,7 +88,12 @@ fun FoodsList(
     }
 
     Scaffold(
-        topBar = { MainToolbar("Brodgar's Recipes") },
+        topBar = {
+            MainToolbar(
+                title = "Brodgar's Recipes",
+                onFiltersClick = onFiltersClick
+            )
+        },
         floatingActionButton = {
             AnimatedVisibility(
                 visible = scrollToTopEnabled,
@@ -147,6 +163,7 @@ fun FoodsListScreenPrev() = with(FoodMocks) {
             selectedFoodId = 1,
             loadPage = {},
             toggleFavorite = {},
+            onFiltersClick = {},
         )
     }
 }

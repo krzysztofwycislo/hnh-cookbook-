@@ -61,7 +61,6 @@ android {
 }
 
 dependencies {
-    def roomVersion = "2.5.1"
     def navVersion = "2.5.3"
 
     implementation 'androidx.core:core-ktx:1.9.0'
@@ -80,9 +79,6 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$navVersion"
 
     // Database
-    implementation "androidx.room:room-runtime:$roomVersion"
-    implementation "androidx.room:room-ktx:$roomVersion"
-    kapt "androidx.room:room-compiler:$roomVersion"
 
     // Parsing
     def moshiVersion = "1.13.0"
