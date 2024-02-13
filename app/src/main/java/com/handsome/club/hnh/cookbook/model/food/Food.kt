@@ -1,17 +1,22 @@
 package com.handsome.club.hnh.cookbook.model.food
 
-import com.handsome.club.hnh.cookbook.model.fep.Fep
+import com.handsome.club.hnh.cookbook.model.fep.FepType
 import com.squareup.moshi.Json
 
 data class Food(
-    @Json(ignore = true) val id: Long = 0,
-    val itemName: String,
+
+    @Json(ignore = true)
+    val id: Long = 0,
+
+    @Json(name = "itemName")
+    val name: String,
+
     val resourceName: String,
     val hunger: Float,
     val energy: Int,
     val ingredients: List<Ingredient>,
     val feps: List<Fep>,
-    val isFavorite: Boolean
+    val isFavorite: Boolean = false
 ) {
 
     val sortedFeps = feps.sortedBy { -it.value }
@@ -19,7 +24,12 @@ data class Food(
 }
 
 data class Ingredient(
-    @Json(ignore = true) val id: Long = 0,
     val name: String,
     val percentage: Int
+)
+
+data class Fep(
+    @Json(name = "name")
+    val type: FepType,
+    val value: Float,
 )

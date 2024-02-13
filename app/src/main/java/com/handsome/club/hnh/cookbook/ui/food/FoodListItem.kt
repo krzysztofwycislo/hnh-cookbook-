@@ -122,7 +122,7 @@ fun FoodHeader(
 
         HorSpacerM()
 
-        Text(text = food.itemName, style = MaterialTheme.typography.titleLarge)
+        Text(text = food.name, style = MaterialTheme.typography.titleLarge)
 
         Spacer(modifier = Modifier.weight(1f))
 

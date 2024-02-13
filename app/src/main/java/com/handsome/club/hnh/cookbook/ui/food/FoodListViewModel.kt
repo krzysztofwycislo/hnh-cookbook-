@@ -12,7 +12,6 @@ import com.handsome.club.hnh.cookbook.ui.base.BaseViewModel
 import com.handsome.club.hnh.cookbook.ui.base.ScreenError
 import com.handsome.club.hnh.cookbook.ui.base.ScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapMerge
@@ -41,7 +40,6 @@ class FoodListViewModel @Inject constructor(
         observe()
     }
 
-    @OptIn(FlowPreview::class)
     private fun observe() = with(viewModelScope) {
         launch {
             filters.flatMapMerge {

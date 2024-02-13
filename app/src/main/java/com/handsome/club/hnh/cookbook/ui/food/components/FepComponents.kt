@@ -1,7 +1,13 @@
 package com.handsome.club.hnh.cookbook.ui.food.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -15,8 +21,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.handsome.club.hnh.cookbook.base.calculations.getRemainder
-import com.handsome.club.hnh.cookbook.model.fep.Fep
 import com.handsome.club.hnh.cookbook.model.fep.FepType
+import com.handsome.club.hnh.cookbook.model.food.Fep
 import com.handsome.club.hnh.cookbook.ui.FoodMocks
 import com.handsome.club.hnh.cookbook.ui.base.withAlpha
 import com.handsome.club.hnh.cookbook.ui.theme.HavenHearthCookbookTheme

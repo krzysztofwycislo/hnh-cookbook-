@@ -1,6 +1,7 @@
 package com.handsome.club.hnh.cookbook.ui
 
-import com.handsome.club.hnh.cookbook.model.fep.Fep
+import com.handsome.club.hnh.cookbook.model.fep.FepType
+import com.handsome.club.hnh.cookbook.model.food.Fep
 import com.handsome.club.hnh.cookbook.model.food.Food
 import com.handsome.club.hnh.cookbook.model.food.Ingredient
 
@@ -14,21 +15,19 @@ object FoodMocks {
     )
 
     fun createExampleFood(seed: Int): Food {
-        val initialId = seed * 100L
-
         val ingredients = listOf(
-            Ingredient(initialId, "Turnip", 10),
-            Ingredient(initialId + 1, "Poppy", 100),
-            Ingredient(initialId + 2, "Piece of slave", 70),
-            Ingredient(initialId + 3, "Bear Meat", 1)
+            Ingredient("Turnip", 10),
+            Ingredient("Poppy", 100),
+            Ingredient("Piece of slave", 70),
+            Ingredient("Bear Meat", 1)
         )
 
         val feps = listOf(
-            Fep(initialId, "Strength +1", 3.1F),
-            Fep(initialId + 1, "Strength +2", 3.1F),
-            Fep(initialId + 2, "Agility +1", 22F),
-            Fep(initialId + 3, "Will +2", 120.5F),
-            Fep(initialId + 4, "Psyche +1", 0F)
+            Fep(FepType.Strength(1), 3.1F),
+            Fep(FepType.Strength(2), 3.1F),
+            Fep(FepType.Agility(1), 22F),
+            Fep(FepType.Will(2), 120.5F),
+            Fep(FepType.Psyche(1), 0F)
         )
 
         return Food(seed.toLong(), "Food Example $seed", "resource$seed", seed.toFloat(), seed * 200, ingredients, feps, seed % 2 == 0)

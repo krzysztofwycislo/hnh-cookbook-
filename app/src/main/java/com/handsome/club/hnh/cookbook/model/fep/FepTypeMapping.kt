@@ -1,11 +1,19 @@
 package com.handsome.club.hnh.cookbook.model.fep
 
-import com.handsome.club.hnh.cookbook.model.fep.FepType.*
+import com.handsome.club.hnh.cookbook.model.fep.FepType.Agility
+import com.handsome.club.hnh.cookbook.model.fep.FepType.Charisma
+import com.handsome.club.hnh.cookbook.model.fep.FepType.Constitution
+import com.handsome.club.hnh.cookbook.model.fep.FepType.Dexterity
+import com.handsome.club.hnh.cookbook.model.fep.FepType.Intelligence
+import com.handsome.club.hnh.cookbook.model.fep.FepType.Perception
+import com.handsome.club.hnh.cookbook.model.fep.FepType.Psyche
+import com.handsome.club.hnh.cookbook.model.fep.FepType.Strength
+import com.handsome.club.hnh.cookbook.model.fep.FepType.Will
 
 
-fun Fep.determineFepType() = fepMapping.getValue(name)
+fun fromApiName(fepName: String) = fepMapping.getValue(fepName)
 
-private val fepMapping = mapOf(
+val fepMapping = mapOf(
     "Strength +1" to Strength(1),
     "Strength +2" to Strength(2),
 

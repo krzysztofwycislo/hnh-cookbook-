@@ -2,6 +2,7 @@ package com.handsome.club.hnh.cookbook.infrastructure.di
 
 import android.content.Context
 import android.content.res.Resources
+import com.handsome.club.hnh.cookbook.data.local.FepTypeAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -20,6 +21,7 @@ class MainModule {
     @Provides
     fun provideMoshi(): Moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
+        .add(FepTypeAdapter)
         .build()
 
 }

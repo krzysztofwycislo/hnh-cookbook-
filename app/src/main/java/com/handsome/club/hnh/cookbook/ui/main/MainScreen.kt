@@ -9,6 +9,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.handsome.club.hnh.cookbook.infrastructure.AppDestination
+import com.handsome.club.hnh.cookbook.infrastructure.AppNavigation
 import com.handsome.club.hnh.cookbook.ui.base.ErrorScreen
 import com.handsome.club.hnh.cookbook.ui.base.LoadingScreen
 import com.handsome.club.hnh.cookbook.ui.food.FoodListViewModel
@@ -42,7 +44,14 @@ fun MainNavigationScreen() {
     NavHost(navController = navController, startDestination = "foodsList") {
         composable("foodsList") {
             val viewModel = hiltViewModel<FoodListViewModel>()
-            FoodsListScreen(viewModel)
+            FoodsListScreen(
+                viewModel,
+                object : AppNavigation {
+                    override fun navigateTo(destination: AppDestination) {
+                        TODO("Not yet implemented")
+                    }
+                }
+            )
         }
     }
 }
