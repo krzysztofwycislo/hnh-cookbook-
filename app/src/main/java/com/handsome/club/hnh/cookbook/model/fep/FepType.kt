@@ -44,4 +44,8 @@ sealed class FepType {
         override val statReward: Int,
     ) : FepType()
 
+    override fun toString(): String {
+        return "${getShortName()} +${statReward}"
+    }
+
 }

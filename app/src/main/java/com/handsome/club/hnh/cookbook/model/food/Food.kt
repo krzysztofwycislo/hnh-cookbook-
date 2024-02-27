@@ -6,7 +6,7 @@ import com.squareup.moshi.Json
 data class Food(
 
     @Json(ignore = true)
-    val id: Long = 0,
+    val id: String = "",
 
     @Json(name = "itemName")
     val name: String,

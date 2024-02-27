@@ -14,30 +14,32 @@ import com.handsome.club.hnh.cookbook.model.fep.FepType.Will
 fun fromApiName(fepName: String) = fepMapping.getValue(fepName)
 
 val fepMapping = mapOf(
-    "Strength +1" to Strength(1),
-    "Strength +2" to Strength(2),
+    Strength(1).toMapEntry(),
+    Strength(2).toMapEntry(),
 
-    "Agility +1" to Agility(1),
-    "Agility +2" to Agility(2),
+    Agility(1).toMapEntry(),
+    Agility(2).toMapEntry(),
 
-    "Constitution +1" to Constitution(1),
-    "Constitution +2" to Constitution(2),
+    Constitution(1).toMapEntry(),
+    Constitution(2).toMapEntry(),
 
-    "Perception +1" to Perception(1),
-    "Perception +2" to Perception(2),
+    Perception(1).toMapEntry(),
+    Perception(2).toMapEntry(),
 
-    "Dexterity +1" to Dexterity(1),
-    "Dexterity +2" to Dexterity(2),
+    Dexterity(1).toMapEntry(),
+    Dexterity(2).toMapEntry(),
 
-    "Intelligence +1" to Intelligence(1),
-    "Intelligence +2" to Intelligence(2),
+    Intelligence(1).toMapEntry(),
+    Intelligence(2).toMapEntry(),
 
-    "Charisma +1" to Charisma(1),
-    "Charisma +2" to Charisma(2),
+    Charisma(1).toMapEntry(),
+    Charisma(2).toMapEntry(),
 
-    "Will +1" to Will(1),
-    "Will +2" to Will(2),
+    Will(1).toMapEntry(),
+    Will(2).toMapEntry(),
 
-    "Psyche +1" to Psyche(1),
-    "Psyche +2" to Psyche(2),
+    Psyche(1).toMapEntry(),
+    Psyche(2).toMapEntry(),
 )
+
+fun FepType.toMapEntry(): Pair<String, FepType> = toString() to this

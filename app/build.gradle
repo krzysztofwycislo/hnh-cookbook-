@@ -1,9 +1,12 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'dagger.hilt.android.plugin'
+
     id 'kotlin-kapt'
     id 'com.google.devtools.ksp'
+
+    id 'dagger.hilt.android.plugin'
+    id 'io.realm.kotlin'
 }
 
 android {
@@ -83,7 +86,8 @@ dependencies {
     // Navigation
     implementation "androidx.navigation:navigation-compose:$navVersion"
 
-    // Database
+    // Persistance
+    implementation 'io.realm.kotlin:library-base:1.11.0'
 
     // Parsing
     def moshiVersion = "1.14.0"
