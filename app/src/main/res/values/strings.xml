@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Haven &amp; Hearth Cookbook</string>
+    <string name="foods_list_title">Foods</string>
+    <string name="food_image">Food image</string>
+    <string name="data_loading_failed_message">Something went wrong with our data</string>
+    <string name="expand_icon">Expand icon</string>
+    <string name="favorite_icon">Favorite icon</string>
+    <string name="open_filters_button">Open filters button</string>
+</resources>
