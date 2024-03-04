@@ -7,13 +7,13 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ObserveFoodsUseCase @Inject constructor(
+    private val foodPersistance: FoodPersistance
 ) : PagingUseCase() {
 
     suspend operator fun invoke(
         filters: FoodFilters,
         dispatcher: CoroutineDispatcher = Dispatchers.IO
     ): Flow<List<Food>> = pagingFlowOf(dispatcher) {
-        // TODO
-        emptyList()
+        foodPersistance.getFoods(it, filters)
     }
 }

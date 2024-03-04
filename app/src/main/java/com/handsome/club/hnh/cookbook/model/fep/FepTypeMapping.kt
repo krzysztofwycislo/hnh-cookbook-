@@ -11,7 +11,7 @@ import com.handsome.club.hnh.cookbook.model.fep.FepType.Strength
 import com.handsome.club.hnh.cookbook.model.fep.FepType.Will
 
 
-fun fromApiName(fepName: String) = fepMapping.getValue(fepName)
+fun fromName(fepName: String) = fepMapping.getValue(fepName)
 
 val fepMapping = mapOf(
     Strength(1).toMapEntry(),

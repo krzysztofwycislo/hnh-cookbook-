@@ -22,7 +22,7 @@ class PopulateFoodRepositoryUseCase @Inject constructor(
 
             logExecutionTime {
                 Timber.i("Saving foods")
-                persistance.insertFoods(foods)
+                persistance.populateFoods(foods)
             }
 
             Timber.i("Processed ${foods.size} foods")
