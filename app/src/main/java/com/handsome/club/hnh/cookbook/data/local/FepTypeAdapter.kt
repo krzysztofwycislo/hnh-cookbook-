@@ -2,24 +2,20 @@ package com.handsome.club.hnh.cookbook.data.local
 
 import com.handsome.club.hnh.cookbook.model.fep.FepType
 import com.handsome.club.hnh.cookbook.model.fep.fromApiName
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.JsonReader
-import com.squareup.moshi.JsonWriter
+import com.squareup.moshi.FromJson
+import com.squareup.moshi.ToJson
 
 
-object FepTypeAdapter : JsonAdapter<FepType>() {
+object FepTypeAdapter {
 
-    override fun fromJson(reader: JsonReader): FepType? {
-        return if (reader.peek() != JsonReader.Token.NULL) {
-            fromApiName(reader.nextString())
-        } else {
-            reader.nextNull()
-        }
+    @ToJson
+    fun toJson(fepType: FepType): String {
+        return fepType.toString()
     }
 
-    override fun toJson(writer: JsonWriter, value: FepType?) {
-        // nothing, one direction mapping
+    @FromJson
+    fun fromJson(fepType: String): FepType {
+        return fromApiName(fepType)
     }
-
 
 }

@@ -10,7 +10,7 @@ class ToggleFavoriteFoodUseCase @Inject constructor(
 //    private val persistance: FavoriteFoodDao, TODO replace persistance
 ) : UseCase {
 
-    suspend operator fun invoke(foodId: Long): Result<Boolean> {
+    suspend operator fun invoke(foodId: String): Result<Boolean> {
         return withContext(Dispatchers.IO) {
             Result.success(
 //                persistance.toggleFavoriteFood(foodId)

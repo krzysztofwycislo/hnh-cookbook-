@@ -21,7 +21,7 @@ import javax.inject.Inject
 data class FoodListScreenState(
     val error: ScreenError? = null,
     val foods: List<Food>? = null,
-    val selectedFoodId: Long? = null,
+    val selectedFoodId: String? = null,
 ) : ScreenState
 
 @HiltViewModel

@@ -5,8 +5,6 @@ sealed class FepType {
 
     abstract val statReward: Int
 
-    fun getShortName() = requireNotNull(this::class.simpleName)
-
 
     class Strength(
         override val statReward: Int,
@@ -45,7 +43,7 @@ sealed class FepType {
     ) : FepType()
 
     override fun toString(): String {
-        return "${getShortName()} +${statReward}"
+        return "${this::class.simpleName} +${statReward}"
     }
 
 }

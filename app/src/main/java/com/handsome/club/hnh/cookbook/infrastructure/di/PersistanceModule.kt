@@ -1,6 +1,8 @@
 package com.handsome.club.hnh.cookbook.infrastructure.di
 
+import com.handsome.club.hnh.cookbook.data.database.RealmFep
 import com.handsome.club.hnh.cookbook.data.database.RealmFood
+import com.handsome.club.hnh.cookbook.data.database.RealmIngredient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,7 +19,13 @@ class PersistanceModule {
     @Provides
     @Singleton
     fun realm() = RealmConfiguration
-        .create(schema = setOf(RealmFood::class))
+        .create(
+            schema = setOf(
+                RealmFood::class,
+                RealmIngredient::class,
+                RealmFep::class,
+            )
+        )
         .run(Realm::open)
 
 }

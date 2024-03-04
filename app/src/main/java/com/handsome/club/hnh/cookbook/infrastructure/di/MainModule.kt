@@ -20,8 +20,8 @@ class MainModule {
 
     @Provides
     fun provideMoshi(): Moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
         .add(FepTypeAdapter)
+        .add(KotlinJsonAdapterFactory())
         .build()
 
 }

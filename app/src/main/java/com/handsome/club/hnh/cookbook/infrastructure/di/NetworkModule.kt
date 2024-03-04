@@ -1,6 +1,7 @@
 package com.handsome.club.hnh.cookbook.infrastructure.di
 
 import com.handsome.club.hnh.cookbook.data.network.HnhFoodFoodsSource
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,9 +20,12 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun retrofit(okHttpClient: OkHttpClient) = Retrofit.Builder()
+    fun retrofit(
+        okHttpClient: OkHttpClient,
+        moshi: Moshi
+    ) = Retrofit.Builder()
         .baseUrl("https://food.hearthlands.net/api/")
-        .addConverterFactory(MoshiConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .client(okHttpClient)
         .build()
 

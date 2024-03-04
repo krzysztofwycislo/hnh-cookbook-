@@ -14,12 +14,12 @@ import dagger.hilt.components.SingletonComponent
 class FoodModule {
 
 //    @Provides
-//    fun provideFoodsSource(source: LocalJsonFoodsSource): FoodsSource = source
+//    fun foodsSource(source: LocalJsonFoodsSource): FoodsSource = source
 
     @Provides
-    fun provideFoodsSource(source: HnhFoodFoodsSource): FoodsSource = source
+    fun foodsSource(source: HnhFoodFoodsSource): FoodsSource = source
 
     @Provides
-    fun provideFoodsSource(persistance: RealmFoodPersistance): FoodPersistance = persistance
+    fun foodPersistance(persistance: RealmFoodPersistance): FoodPersistance = persistance
 
 }

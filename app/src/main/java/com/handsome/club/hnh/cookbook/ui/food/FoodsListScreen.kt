@@ -74,7 +74,7 @@ fun FoodsListScreen(
 fun FoodsList(
     foods: List<Food>,
     onClick: (Food) -> Unit,
-    selectedFoodId: Long?,
+    selectedFoodId: String?,
     loadPage: () -> Unit,
     toggleFavorite: (Food) -> Unit,
     onFiltersClick: () -> Unit
@@ -160,7 +160,7 @@ fun FoodsListScreenPrev() = with(FoodMocks) {
         FoodsList(
             foods = exampleFoods,
             onClick = {},
-            selectedFoodId = 1,
+            selectedFoodId = "1",
             loadPage = {},
             toggleFavorite = {},
             onFiltersClick = {},
