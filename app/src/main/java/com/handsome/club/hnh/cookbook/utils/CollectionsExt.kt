@@ -9,3 +9,11 @@ suspend fun <T> List<T>.forEachIndexedApply(block: suspend (Int, T) -> Unit): Li
     forEachIndexed { index, item -> block(index, item) }
     return this
 }
+
+fun <T> Set<T>.addOrRemove(element: T): Set<T> {
+    return if (contains(element)) {
+        minus(element)
+    } else {
+        plus(element)
+    }
+}

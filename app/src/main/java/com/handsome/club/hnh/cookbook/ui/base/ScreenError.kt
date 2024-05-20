@@ -27,7 +27,7 @@ sealed class ScreenError(
     @DrawableRes val errorImageId: Int
 ) {
 
-    object DataLoadingFailed : ScreenError(R.string.data_loading_failed_message, R.drawable.error_outline_black)
+    data object DataLoadingFailed : ScreenError(R.string.data_loading_failed_message, R.drawable.error_outline_black)
 
 }
 

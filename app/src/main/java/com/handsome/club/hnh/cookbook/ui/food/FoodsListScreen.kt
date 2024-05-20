@@ -44,7 +44,8 @@ fun FoodsListScreen(
     viewModel: FoodListViewModel,
     navigation: AppNavigation
 ) {
-    val state = viewModel.screenState
+    val state = viewModel.state
+    val foods = remember { viewModel.foods }
 
     Column {
         when {
@@ -53,9 +54,9 @@ fun FoodsListScreen(
                     error = state.error
                 )
 
-            state.foods != null ->
+            foods.isNotEmpty() ->
                 FoodsList(
-                    foods = state.foods,
+                    foods = viewModel.foods,
                     selectedFoodId = state.selectedFoodId,
                     onClick = viewModel::onFoodSelection,
                     loadPage = viewModel::loadNextPage,

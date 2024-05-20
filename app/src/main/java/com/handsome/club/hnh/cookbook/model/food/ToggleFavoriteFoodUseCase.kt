@@ -7,15 +7,12 @@ import javax.inject.Inject
 
 
 class ToggleFavoriteFoodUseCase @Inject constructor(
-//    private val persistance: FavoriteFoodDao, TODO replace persistance
+    private val persistance: FoodPersistance
 ) : UseCase {
 
-    suspend operator fun invoke(foodId: String): Result<Boolean> {
+    suspend operator fun invoke(foodId: String): Boolean {
         return withContext(Dispatchers.IO) {
-            Result.success(
-//                persistance.toggleFavoriteFood(foodId)
-                false
-            )
+            persistance.toggleFavoriteFood(foodId)
         }
     }
 

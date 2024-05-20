@@ -10,4 +10,6 @@ interface FoodPersistance {
 
     suspend fun getFoods(paging: Pagination, filters: FoodFilters): List<Food>
 
+    suspend fun toggleFavoriteFood(foodId: String): Boolean
+
 }

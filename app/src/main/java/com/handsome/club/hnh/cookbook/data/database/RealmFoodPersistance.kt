@@ -6,6 +6,7 @@ import com.handsome.club.hnh.cookbook.model.food.FoodFilters
 import com.handsome.club.hnh.cookbook.model.food.FoodPersistance
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
+import org.mongodb.kbson.ObjectId
 import javax.inject.Inject
 
 class RealmFoodPersistance @Inject constructor(
@@ -31,6 +32,19 @@ class RealmFoodPersistance @Inject constructor(
             .limit(paging.offset)
             .find()
             .map { it.toModel() }
+    }
+
+    override suspend fun toggleFavoriteFood(foodId: String): Boolean {
+        return realm.write {
+            val food = realm.query(RealmFood::class, "id = $0", ObjectId(foodId))
+                .find()
+                .first()
+
+            findLatest(food)?.run {
+                isFavorite = !isFavorite
+                isFavorite
+            } ?: false
+        }
     }
 
 }

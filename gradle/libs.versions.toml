@@ -1,0 +1,59 @@
+[versions]
+gradle = "8.4.1"
+
+kotlin = "2.0.0-RC3"
+ksp = "2.0.0-RC3-1.0.20"
+
+hilt = "2.50"
+composeBom = "2024.05.00"
+realm = "1.16.0"
+
+retrofit = "2.9.0"
+okhttp = "4.11.0"
+moshi = "1.14.0"
+
+[libraries]
+androidx-ktx = { module = "androidx.core:core-ktx", version = "1.13.1" }
+
+ui-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+ui-compose = { module = "androidx.compose.ui:ui" }
+ui-compose-runtime = { module = "androidx.compose.runtime:runtime" }
+ui-compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+ui-compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
+ui-compose-material3 = { module = "androidx.compose.material3:material3" }
+ui-compose-activity = { module = "androidx.activity:activity-compose", version = "1.9.0" }
+ui-compose-navigation = { module = "androidx.navigation:navigation-compose", version = "2.7.7" }
+ui-coil-compose = { module = "io.coil-kt:coil-compose", version = "2.1.0" }
+
+persistence-realm = { module = "io.realm.kotlin:library-base", version = "1.11.0" }
+
+network-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+network-retrofit-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
+network-okhttp3-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+network-moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
+network-moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
+network-moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
+
+
+di-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+di-hilt-compose-navigation = { module = "androidx.hilt:hilt-navigation-compose", version = "1.2.0" }
+di-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+
+util-timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
+
+test-junit = { module = "junit:junit", version = "4.13.2" }
+test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version = "1.7.1" }
+test-compose-mainfest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "gradle" }
+android-library = { id = "com.android.library", version.ref = "gradle" }
+
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+
+realm = { id = "io.realm.kotlin", version.ref = "realm" }

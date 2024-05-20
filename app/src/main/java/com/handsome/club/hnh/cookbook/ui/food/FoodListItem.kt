@@ -190,7 +190,7 @@ fun FoodItemViewPrev() = with(FoodMocks) {
             food = createExampleFood(10),
             ingredientsVisible = true,
             onClick = {},
-            toggleFavorite = {}
+            toggleFavorite = {},
         )
     }
 }

@@ -1,8 +1,10 @@
 package com.handsome.club.hnh.cookbook.ui.food
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.viewModelScope
 import com.handsome.club.hnh.cookbook.model.food.Food
 import com.handsome.club.hnh.cookbook.model.food.FoodFilters
@@ -20,7 +22,6 @@ import javax.inject.Inject
 
 data class FoodListScreenState(
     val error: ScreenError? = null,
-    val foods: List<Food>? = null,
     val selectedFoodId: String? = null,
 ) : ScreenState
 
@@ -30,8 +31,10 @@ class FoodListViewModel @Inject constructor(
     private val toggleFavoriteFoodUseCase: ToggleFavoriteFoodUseCase
 ) : BaseViewModel() {
 
-    var screenState by mutableStateOf(FoodListScreenState())
+    var state by mutableStateOf(FoodListScreenState())
         private set
+
+    val foods = mutableStateListOf<Food>()
 
     private val filters = MutableStateFlow(FoodFilters.DEFAULT)
 
@@ -40,29 +43,40 @@ class FoodListViewModel @Inject constructor(
         observe()
     }
 
+    fun <T> SnapshotStateList<T>.updateElementState(
+        predicate: (T) -> Boolean,
+        updateBlock: (T) -> T
+    ) {
+        val index = indexOfFirst(predicate)
+        add(index, updateBlock(get(index)))
+    }
+
     private fun observe() = with(viewModelScope) {
         launch {
             filters.flatMapMerge {
                 observeFoodsUseCase(it)
             }.collect {
-                // TODO refactor favorite collection
-                screenState = screenState.copy(
-                    error = null,
-                    foods = it
-                )
+                foods.addAll(it)
+                state = state.copy(error = null)
             }
         }
     }
 
     fun onFoodSelection(selectedFood: Food) {
-        screenState = screenState.copy(
-            selectedFoodId = selectedFood.id.takeIf { selectedFood.id != screenState.selectedFoodId }
+        state = state.copy(
+            selectedFoodId = selectedFood.id.takeIf { selectedFood.id != state.selectedFoodId }
         )
     }
 
     fun toggleFavorite(food: Food) {
         viewModelScope.launch {
-            toggleFavoriteFoodUseCase(food.id)
+            val toggleResult = toggleFavoriteFoodUseCase(food.id)
+
+            foods.updateElementState(
+                { it.id == food.id }
+            ) {
+                it.copy(isFavorite = toggleResult)
+            }
         }
     }
 
